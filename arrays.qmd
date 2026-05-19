@@ -52,7 +52,7 @@ suppressPackageStartupMessages(library(tinytex, quietly = TRUE))
 frequently. All suggestions for improvement are welcome. All Rmd, tex,
 html, pdf, R, and C files are in the public domain. Attribution will be
 appreciated, but is not required. The files can be found at
-<https://github.com/deleeuw> 
+<https://github.com/deleeuw/arrays> 
 
 \sectionbreak
 
@@ -60,31 +60,90 @@ appreciated, but is not required. The files can be found at
 
 # Decomposition
 
-$$
-a_i=a_\bullet+(a_i-a_\bullet)
-$$
+## Vectors
 
-$$
-a_{ij}=a_{\bullet\bullet}+(a_{i\bullet}-a_{\bullet\bullet})+(a_{\bullet j}-a_{\bullet\bullet})+
-(a_{ij}-a_{i\bullet}-a_{\bullet j}+a_{\bullet\bullet})
-$$
+Suppose $x$ is an element of $n$-dimensional Euclidean space, with the usual inner product and norm. We use a $\bullet$ replacing a subscript to indicate averaging over that subscript. We can decompose $x$ into two orthogonal parts, with the first part a vector with all elements equal to the mean and the second part a vector with the deviations from the mean. Thus
+\begin{equation}
+x_i=x_\bullet+(x_i-x_\bullet).\label{eq-onedimelem}
+\end{equation}
+
+Equation \eqref{eq-onedimelem} can be written as
+\begin{equation}
+x=Px+(I-P)x,\label{eq-onedimproj}
+\end{equation}
+where $P$ projects on the subspace of all constant vectors, i.e. $P:=n^{-1}ee'$
+with $e$ a vector with all elements equal to one. Now $P^2=P$ and thus
+$P(I-P)=0$, which shows that $Px$ and $(I-P)x$ are orthogonal. Also, as
+Pythagoras used to say,
+\begin{equation}
+\|x\|^2=\|Px\|^2+\|I-Px\|^2.\label{eq-onedimpyth}
+\end{equation}
+
+The projection formulation suggests some obvious generalizations. We can replace the
+one-dimensional subspace of all constant vectors by an arbitrary subspace $S$, and we
+can replace the inner product $x'y$ by an arbitrary inner product $x'Ay$, with
+$A$ positive semi-definite. If $Y$ is an $A$-orthonormal basis for the subspace $S$,
+i.e. $Y'AY=I$, then $Px=YY'Ax$.
+
+A further generalization uses multiple mutually orthogonal subspaces $S_1,\cdots,S_m$, with
+corresponding projectors $P_1,\cdots,P_m$. If $P_1+\cdots+P_m=I$ we can write
+\begin{equation}
+x=P_1x+P_2x+\cdots P_mx,
+\end{equation}
+and if $P_1+\cdots+P_m\lesssim I$ in the Loewner sense then
+\begin{equation}
+x=P_1x+P_2x+\cdots P_mx+(I-P_1-\cdots-P_m)x
+\end{equation}
+Note that the "residual" $I-P_1-\cdots-P_m$ is orthogonal to all
+$P_1,\cdots,P_m$.
+
+
+## Matrices
+
+Suppose $X$ is an $n\times m$ matrix, an element of the space $\mathbb{R}^{n\times m}$
+with inner product $\text{tr}\ X'Y$ and squared norm $\|X\|^2=\text{tr}\ X'X$. The
+decomposition we are interested in is
+\begin{equation}
+x_{ij}=x_{\bullet\bullet}+(x_{i\bullet}-x_{\bullet\bullet})+(x_{\bullet j}-x_{\bullet\bullet})+
+(x_{ij}-x_{i\bullet}-x_{\bullet j}+x_{\bullet\bullet}).\label{eq-twodimelem}
+\end{equation}
+If we define the projectors
+\begin{subequations}
+\begin{align}
+P_r&=n^{-1}ee',\\
+Q_r&=I-P_r,
+\end{align}
+and
+\begin{align}
+P_c&=m^{-1}ee',\\
+Q_c&=I-P_c.
+\end{align}
+\end{subequations}
+then equation \eqref{eq-twodimelem} becomes
+\begin{equation}
+X=P_rXP_c+P_rXQ_c+Q_rXP_c+Q_rXQ_c.\label{eq-twodimproj}
+\end{equation}
+Thius clearly shows four projectors, orthogonal to each other, adding up to the
+identity.
+
+## Arrays
 
 \begin{multline}
-a_{ijk}=a_{\bullet\bullet\bullet}+(a_{i\bullet\bullet}-a_{\bullet\bullet\bullet})+(a_{\bullet j \bullet}-a_{\bullet\bullet\bullet})+(a_{\bullet\bullet k}-a_{\bullet\bullet\bullet})+\\
-(a_{ij\bullet}-a_{i\bullet\bullet}-a_{\bullet j\bullet}+a_{\bullet\bullet\bullet})+\\
-(a_{i\bullet k}-a_{i\bullet\bullet}-a_{\bullet\bullet k}+a_{\bullet\bullet\bullet})+\\
-(a_{\bullet jk}-a_{\bullet j\bullet}-a_{\bullet\bullet k}+a_{\bullet\bullet\bullet})+\\
-(a_{ijk}
--a_{ij\bullet}-a_{i\bullet k}-a_{\bullet jk}+a_{i\bullet\bullet}+a_{\bullet j\bullet}+a_{\bullet\bullet k}-a_{\bullet\bullet\bullet})
+x_{ijk}=x_{\bullet\bullet\bullet}+(x_{i\bullet\bullet}-x_{\bullet\bullet\bullet})+(x_{\bullet j \bullet}-x_{\bullet\bullet\bullet})+(x_{\bullet\bullet k}-x_{\bullet\bullet\bullet})+\\
+(x_{ij\bullet}-x_{i\bullet\bullet}-x_{\bullet j\bullet}+x_{\bullet\bullet\bullet})+\\
+(x_{i\bullet k}-x_{i\bullet\bullet}-x_{\bullet\bullet k}+x_{\bullet\bullet\bullet})+\\
+(x_{\bullet jk}-x_{\bullet j\bullet}-x_{\bullet\bullet k}+x_{\bullet\bullet\bullet})+\\
+(x_{ijk}
+-x_{ij\bullet}-x_{i\bullet k}-x_{\bullet jk}+x_{i\bullet\bullet}+x_{\bullet j\bullet}+x_{\bullet\bullet k}-x_{\bullet\bullet\bullet})
 \end{multline}
 
 # Projectors
 
-$\{P_1(A)\}_{ijk}=a_{i\bullet\bullet}$
+$\{P_1(A)\}_{ijk}=x_{i\bullet\bullet}$
 
-$\{Q_1(A)\}_{ijk}=\delta^{ijk}-a_{i\bullet\bullet}$
+$\{Q_1(A)\}_{ijk}=\delta^{ijk}-x_{i\bullet\bullet}$
 
-$\{P_{12}(A)\}_{ijk}=a_{ij\bullet}$
+$\{P_{12}(A)\}_{ijk}=x_{ij\bullet}$
 
 # Least Squares
 
@@ -101,6 +160,6 @@ Suppose $M_n$ is the set of matrices $X$ of order $n$ with
 
 Suppose the array $A$ is $n\times m\times \ell$. Choose $X\in M_n$, $Y\in M_m$, and $Z\in M_\ell$. Define
 $$
-\alpha_{ijk}=\sum_{i'=1}^n\sum_{j'=1}^m\sum_{k'=1}^l a_{i'j'k'}x_{i'i}y_{j'j}z_{k'k}
+\alpha_{ijk}=\sum_{i'=1}^n\sum_{j'=1}^m\sum_{k'=1}^l x_{i'j'k'}x_{i'i}y_{j'j}z_{k'k}
 $$
 
