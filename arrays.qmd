@@ -1,0 +1,106 @@
+---
+title: Array Decomposition
+author: 
+    - name: Jan de Leeuw
+      orcid: 0000-0003-1420-1797
+      email: jan@deleeuwpdx.net
+      affiliation: 
+        - name: University of California Los Angeles
+          city: Los Angeles
+          state: CA
+          url: www.ucla.edu
+      license: "CC0"
+date: last-modified
+date-format: long
+bibliography: [mypubs.bib, total.bib]
+number-sections: true
+pdf-engine: lualatex
+keep-tex: true
+format:
+   pdf:
+    fontsize: 12pt
+    include-in-header: 
+     - preamble.tex
+    keep-tex: true
+    link-citations: true
+    documentclass: scrartcl
+    number-sections: true
+   html:
+    fontsize: 12pt
+    include-in-header: 
+     - preamble.css
+    keep-md: true
+    number-sections: true
+toc: true
+toc-depth: 3
+editor: source
+papersize: letter
+graphics: true
+link-citations: true
+mainfont: Times New Roman
+abstract: TBD
+---
+
+```{r loadpackages, echo = FALSE}
+suppressPackageStartupMessages(library(knitr, quietly = TRUE))
+suppressPackageStartupMessages(library(tinytex, quietly = TRUE))
+```
+
+\sectionbreak 
+
+**Note:** This is a working manuscript which will be expanded/updated
+frequently. All suggestions for improvement are welcome. All Rmd, tex,
+html, pdf, R, and C files are in the public domain. Attribution will be
+appreciated, but is not required. The files can be found at
+<https://github.com/deleeuw> 
+
+\sectionbreak
+
+# Introduction
+
+# Decomposition
+
+$$
+a_i=a_\bullet+(a_i-a_\bullet)
+$$
+
+$$
+a_{ij}=a_{\bullet\bullet}+(a_{i\bullet}-a_{\bullet\bullet})+(a_{\bullet j}-a_{\bullet\bullet})+
+(a_{ij}-a_{i\bullet}-a_{\bullet j}+a_{\bullet\bullet})
+$$
+
+\begin{multline}
+a_{ijk}=a_{\bullet\bullet\bullet}+(a_{i\bullet\bullet}-a_{\bullet\bullet\bullet})+(a_{\bullet j \bullet}-a_{\bullet\bullet\bullet})+(a_{\bullet\bullet k}-a_{\bullet\bullet\bullet})+\\
+(a_{ij\bullet}-a_{i\bullet\bullet}-a_{\bullet j\bullet}+a_{\bullet\bullet\bullet})+\\
+(a_{i\bullet k}-a_{i\bullet\bullet}-a_{\bullet\bullet k}+a_{\bullet\bullet\bullet})+\\
+(a_{\bullet jk}-a_{\bullet j\bullet}-a_{\bullet\bullet k}+a_{\bullet\bullet\bullet})+\\
+(a_{ijk}
+-a_{ij\bullet}-a_{i\bullet k}-a_{\bullet jk}+a_{i\bullet\bullet}+a_{\bullet j\bullet}+a_{\bullet\bullet k}-a_{\bullet\bullet\bullet})
+\end{multline}
+
+# Projectors
+
+$\{P_1(A)\}_{ijk}=a_{i\bullet\bullet}$
+
+$\{Q_1(A)\}_{ijk}=\delta^{ijk}-a_{i\bullet\bullet}$
+
+$\{P_{12}(A)\}_{ijk}=a_{ij\bullet}$
+
+# Least Squares
+
+# Interactions
+
+# Log-linear Analysis
+
+# Orthogonal functions
+
+Suppose $M_n$ is the set of matrices $X$ of order $n$ with
+
+* first column all elements equal to one, and
+* $X'X=nI$.
+
+Suppose the array $A$ is $n\times m\times \ell$. Choose $X\in M_n$, $Y\in M_m$, and $Z\in M_\ell$. Define
+$$
+\alpha_{ijk}=\sum_{i'=1}^n\sum_{j'=1}^m\sum_{k'=1}^l a_{i'j'k'}x_{i'i}y_{j'j}z_{k'k}
+$$
+
