@@ -96,6 +96,39 @@
 \makeatother
 
 
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
 
 
@@ -208,7 +241,7 @@
 
 \title{Array Decomposition}
 \author{Jan de Leeuw}
-\date{May 19, 2026}
+\date{May 25, 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -225,7 +258,7 @@ TBD
 
 \textbf{Note:} This is a working manuscript which will be
 expanded/updated frequently. All suggestions for improvement are
-welcome. All Rmd, tex, html, pdf, R, and C files are in the public
+welcome. All qmd, tex, html, pdf, R, and C files are in the public
 domain. Attribution will be appreciated, but is not required. The files
 can be found at \url{https://github.com/deleeuw/arrays}
 
@@ -238,11 +271,12 @@ can be found at \url{https://github.com/deleeuw/arrays}
 \subsection{Vectors}\label{vectors}
 
 Suppose \(x\) is an element of \(n\)-dimensional Euclidean space, with
-the usual inner product and norm. We use a \(\bullet\) replacing a
-subscript to indicate averaging over that subscript. We can decompose
-\(x\) into two orthogonal parts, with the first part a vector with all
-elements equal to the mean and the second part a vector with the
-deviations from the mean. Thus \begin{equation}
+the usual inner product \(x'y\) and the squared norm
+\(\|x\|^2:=\sqrt{x'x}\). We can decompose \(x\) into two orthogonal
+parts, with the first part a vector with all elements equal to the mean
+and the second part a vector with the deviations from the mean. We use a
+\(\bullet\) replacing a subscript to indicate averaging over that
+subscript. The elementwise decomposition is \begin{equation}
 x_i=x_\bullet+(x_i-x_\bullet).\label{eq-onedimelem}
 \end{equation}
 
@@ -254,75 +288,135 @@ equal to one. Now \(P^2=P\) and thus \(P(I-P)=0\), which shows that
 \(Px\) and \((I-P)x\) are orthogonal. Also, as Pythagoras used to say,
 \begin{equation}
 \|x\|^2=\|Px\|^2+\|I-Px\|^2.\label{eq-onedimpyth}
-\end{equation}
+\end{equation} Note that equation \eqref{eq-onedimproj} is actually
+correct for any square matrix \(P\), but the two components are
+orthogonal if and only if \(P\) is a projector. Thus
+\eqref{eq-onedimpyth} is also only true if \(P\) is a projector.
 
-The projection formulation suggests some obvious generalizations. We can
-replace the one-dimensional subspace of all constant vectors by an
-arbitrary subspace \(S\), and we can replace the inner product \(x'y\)
-by an arbitrary inner product \(x'Ay\), with \(A\) positive
-semi-definite. If \(Y\) is an \(A\)-orthonormal basis for the subspace
-\(S\), i.e.~\(Y'AY=I\), then \(Px=YY'Ax\).
-
-A further generalization uses multiple mutually orthogonal subspaces
-\(S_1,\cdots,S_m\), with corresponding projectors \(P_1,\cdots,P_m\). If
-\(P_1+\cdots+P_m=I\) we can write \begin{equation}
+We can generalize equation \eqref{eq-onedimproj} to mutually orthogonal
+subspaces \(S_1,\cdots,S_m\), with corresponding projectors
+\(P_1,\cdots,P_m\). If \(P_1+\cdots+P_m=I\) we can have the orthogonal
+decomposition \begin{equation}
 x=P_1x+P_2x+\cdots P_mx,
-\end{equation} and if \(P_1+\cdots+P_m\lesssim I\) in the Loewner sense
+\end{equation} and if \(P_1+\cdots+P_m\lesssim I\) in the Loewner
+sense\footnote{The eigenvalues of $P_1+\cdots+P_m$ are less than or equal to one.}
 then \begin{equation}
 x=P_1x+P_2x+\cdots P_mx+(I-P_1-\cdots-P_m)x
 \end{equation} Note that the ``residual'' \(I-P_1-\cdots-P_m\) is
 orthogonal to all \(P_1,\cdots,P_m\).
 
+Suppose \(U\) is an \(n\times n\) matrix with \(U'U=nI\) and with first
+column equal to \(e\). Define \(\alpha:=n^{-1}U'x\) and
+\(P_j:=n^{-1}u_ju_j'\). The \(P_j\) are projectors orthogonal to each
+other. Then \begin{equation}
+U\alpha=\sum_{j=1}^nP_jx=(\frac{1}{n}ee')x+(I-\frac{1}{n}ee')x=x_\bullet e+(x-x_\bullet).
+\end{equation} Although \(\alpha\) depends on the choice of \(U\) the
+product \(U\alpha\) is the same for all \(U\).
+
+We can also derive the decomposition from a least squares projection
+perspective. Suppose we want to minimize \(\|x-a\|^2\) over all \(a\) of
+the form \(a=\alpha e\). The solution for \(\alpha\) is, of course,
+\(Px=x_\bullet\). And we may want to minimize \(\|x-a\|^2\) over all
+\(a\) satisfying \(e'a=0\), which gives the solution
+\((I-P)x=x-x_\bullet\).
+
+The projection formulation suggests some obvious further
+generalizations. We can replace the one-dimensional subspace of all
+constant vectors by an arbitrary subspace \(S\), and we can replace the
+inner product \(x'y\) by an arbitrary inner product \(x'Ay\), with \(A\)
+positive semi-definite. If \(H\) is an \(A\)-orthonormal basis for the
+subspace \(S\), i.e.~if \(H'AH=I\), then \(Px=HH'Ax\) or \((x-Px)'Az=0\)
+for all \(z\in S\).
+
+In the next sections we analyse the same approaches we have used for
+vectors to decompositions of linear spaces of matrices and arrays. This
+is actually not as much of a generalization as it appears to be, because
+matrices and arrays are elements of inner product spaces, just like
+vectors are. What we will introduce are different notations and in most
+cases different inner products.
+
 \subsection{Matrices}\label{matrices}
 
 Suppose \(X\) is an \(n\times m\) matrix, an element of the space
-\(\mathbb{R}^{n\times m}\) with inner product \(\text{tr}\ X'Y\) and
-squared norm \(\|X\|^2=\text{tr}\ X'X\). The decomposition we are
+\(\mathbb{R}^{n\times m}\) with inner product
+\(\langle X,Y\rangle:=\text{tr}\ X'Y\) and squared norm
+\(\|X\|^2=\text{tr}\ X'X\). The elementwise decomposition we are
 interested in is \begin{equation}
 x_{ij}=x_{\bullet\bullet}+(x_{i\bullet}-x_{\bullet\bullet})+(x_{\bullet j}-x_{\bullet\bullet})+
 (x_{ij}-x_{i\bullet}-x_{\bullet j}+x_{\bullet\bullet}).\label{eq-twodimelem}
-\end{equation} If we define the projectors \begin{subequations}
+\end{equation} Using ANOVA terminology we have the \emph{overall
+effect}, the two \emph{main effects} for rows and columns, and the
+\emph{first order interaction} of the rows and columns.
+
+We define the projectors \begin{subequations}
 \begin{align}
-P_r&=n^{-1}ee',\\
-Q_r&=I-P_r,
+P_r&:=n^{-1}ee',\\
+P_c&:=m^{-1}ee',
 \end{align}
-and
-\begin{align}
-P_c&=m^{-1}ee',\\
-Q_c&=I-P_c.
-\end{align}
-\end{subequations} then equation \eqref{eq-twodimelem} becomes
-\begin{equation}
+\end{subequations} and with \(Q_r:=I-P_r\) and \(Q_c:=I-P_c\). Equation
+\eqref{eq-twodimelem} becomes \begin{equation}
 X=P_rXP_c+P_rXQ_c+Q_rXP_c+Q_rXQ_c.\label{eq-twodimproj}
-\end{equation} Thius clearly shows four projectors, orthogonal to each
+\end{equation} Thus again we have four projectors, orthogonal to each
 other, adding up to the identity.
+
+In {de Leeuw} (\citeproc{ref-deleeuw_E_26e}{2026}) we generalize the
+results in this section to the inner product
+\(\langle X,Y\rangle:=\text{tr}\ RXCY'\), with \(R\) and \(C\) positive
+semi-definite. Decomposition \eqref{eq-twodimproj} remains correct, with
+\(P_r=ee'R/e'Re\) and \(P_c=Cee'/e'Ce\). Note that both projectors are
+asymmetric. Equation \eqref{eq-twodimelem} also remains valid, if we
+interpret the bullitt subscripts as weighted means.
+
+To see more clearly how the vector case and the matrix case are
+different we use the vec() operator to map \(\mathbb{R}^{n\times m}\)
+into \(\mathbb{R}^{nm}\). Using the Kronecker product \(\otimes\) of
+matrices we have the identity \begin{equation}
+\text{tr}\ RXCY'=x'(C\otimes R)y,
+\end{equation} with \(x:=\text{vec}(X)\) and \(y=\text{vec}(Y)\). Thus
+our matrix results can be interpreted as a special case of the vector
+results in \(\mathbb{R}^{nm}\), with inner product \(x'(C\otimes R)y\).
+
+Define \(U\) and \(V\) to be square matrices with first column equal to
+one, \(U'U=nI\) and \(V'V=mI\). Then define \[
+\alpha_{ij}=\frac{1}{nm}u_i'Xv_j.
+\] Now \[
+X=\sum_{i=1}^n\sum_{j=1}^m\alpha_{ij}u_iv_j'
+\] \[
+\|X\|^2=\sum_{i=1}^n\sum_{j=1}^m\sum_{k=1}^n\sum_{l=1}^ma_{ij}a_{kl}\text{tr}\ v_ju_i'u_kv_l'=\sum_{i=1}^n\sum_{j=1}^m\sum_{k=1}^n\sum_{l=1}^m\delta^{ik}\delta^{jl}a_{ij}a_{kl}=\|A\|^2
+\] Term with \(i=1\) and \(j=1\). \[
+a_{11}ee'=x_{\bullet\bullet}ee'
+\] Terms with \(i=1\) and \(j\neq 1\). \[
+\frac{1}{nm}\sum_{j=2}^m\alpha_{1j}ev_j'=\frac{1}{nm}e\sum_{j=2}^m(e'Xv_j)v_j'=n^{-1}ee'XJ_m=e(x_{\bullet_j}-x_{\bullet\bullet})'
+\] \[
+\frac{1}{nm}\sum_{i=1}^n\sum_{j=2}^m(u_i'Xv_j)u_iv_j'=J_nXJ_m=(x_{ij}-x_{i\bullet}e'-ex_{j\bullet}+x_{\bullet\bullet})
+\]
 
 \subsection{Arrays}\label{arrays}
 
-\begin{multline}
-x_{ijk}=x_{\bullet\bullet\bullet}+(x_{i\bullet\bullet}-x_{\bullet\bullet\bullet})+(x_{\bullet j \bullet}-x_{\bullet\bullet\bullet})+(x_{\bullet\bullet k}-x_{\bullet\bullet\bullet})+\\
-(x_{ij\bullet}-x_{i\bullet\bullet}-x_{\bullet j\bullet}+x_{\bullet\bullet\bullet})+\\
-(x_{i\bullet k}-x_{i\bullet\bullet}-x_{\bullet\bullet k}+x_{\bullet\bullet\bullet})+\\
-(x_{\bullet jk}-x_{\bullet j\bullet}-x_{\bullet\bullet k}+x_{\bullet\bullet\bullet})+\\
-(x_{ijk}
+If \(X\) is an \(n\times m\times\ell\) array then the elementwiuse
+decomposition we are interested in is \begin{align}
+x_{ijk}&=x_{\bullet\bullet\bullet}+(x_{i\bullet\bullet}-x_{\bullet\bullet\bullet})+(x_{\bullet j \bullet}-x_{\bullet\bullet\bullet})+(x_{\bullet\bullet k}-x_{\bullet\bullet\bullet})\\
+&+(x_{ij\bullet}-x_{i\bullet\bullet}-x_{\bullet j\bullet}+x_{\bullet\bullet\bullet})\\
+&+(x_{i\bullet k}-x_{i\bullet\bullet}-x_{\bullet\bullet k}+x_{\bullet\bullet\bullet})\\
+&+(x_{\bullet jk}-x_{\bullet j\bullet}-x_{\bullet\bullet k}+x_{\bullet\bullet\bullet})\\
+&+(x_{ijk}
 -x_{ij\bullet}-x_{i\bullet k}-x_{\bullet jk}+x_{i\bullet\bullet}+x_{\bullet j\bullet}+x_{\bullet\bullet k}-x_{\bullet\bullet\bullet})
-\end{multline}
-
-\section{Projectors}\label{projectors}
-
-\(\{P_1(A)\}_{ijk}=x_{i\bullet\bullet}\)
-
-\(\{Q_1(A)\}_{ijk}=\delta^{ijk}-x_{i\bullet\bullet}\)
-
-\(\{P_{12}(A)\}_{ijk}=x_{ij\bullet}\)
-
-\section{Least Squares}\label{least-squares}
+\end{align}
 
 \section{Interactions}\label{interactions}
 
-\section{Log-linear Analysis}\label{log-linear-analysis}
+\section{Orthogonal Functions}\label{orthogonal-functions}
 
-\section{Orthogonal functions}\label{orthogonal-functions}
+This section is inspired by an anonymous and unpublished manuscript that
+I read around 1980 with a title that might have been ``Lois de
+Probabilité sur un Ensemble Produit'' and perhaps the words
+``Décomposition'' and ``Interaction'' were also in the title or
+subtitle. It was either by Jean-Paul Benzécri or by one of his students
+or co-workers. I did have a copy and I lost it, and Google can't find me
+a new one. The published papers by
+(\citeproc{ref-bener_82}{\textbf{bener\_82?}}) and
+(\citeproc{ref-benzecri_hamouda_83}{\textbf{benzecri\_hamouda\_83?}})
+discuss the same materials, but in less detail.
 
 Suppose \(M_n\) is the set of matrices \(X\) of order \(n\) with
 
@@ -336,8 +430,22 @@ Suppose \(M_n\) is the set of matrices \(X\) of order \(n\) with
 
 Suppose the array \(A\) is \(n\times m\times \ell\). Choose
 \(X\in M_n\), \(Y\in M_m\), and \(Z\in M_\ell\). Define \[
-\alpha_{ijk}=\sum_{i'=1}^n\sum_{j'=1}^m\sum_{k'=1}^l x_{i'j'k'}x_{i'i}y_{j'j}z_{k'k}
-\]
+\alpha_{ijk}=\sum_{i'=1}^n\sum_{j'=1}^m\sum_{k'=1}^l a_{i'j'k'}x_{i'i}y_{j'j}z_{k'k}
+\] \[
+\alpha_{ij1}=\sum_{i'=1}^n\sum_{j'=1}^ma_{i'j'\bullet}x_{i'i}y_{j'j}
+\] \sectionbreak
+
+\section*{References}\label{references}
+\addcontentsline{toc}{section}{References}
+
+\protect\phantomsection\label{refs}
+\begin{CSLReferences}{1}{1}
+\bibitem[\citeproctext]{ref-deleeuw_E_26e}
+{de Leeuw, Jan}. 2026. {``Matrix Decomposition with Kronecker
+Weights.''}
+\url{https://jansweb.netlify.app/publication/deleeuw-e-26-e/deleeuw-e-26-e.pdf}.
+
+\end{CSLReferences}
 
 
 
