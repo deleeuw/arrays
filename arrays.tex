@@ -241,7 +241,7 @@
 
 \title{Array Decomposition}
 \author{Jan de Leeuw}
-\date{May 25, 2026}
+\date{May 26, 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -348,7 +348,7 @@ x_{ij}=x_{\bullet\bullet}+(x_{i\bullet}-x_{\bullet\bullet})+(x_{\bullet j}-x_{\b
 effect}, the two \emph{main effects} for rows and columns, and the
 \emph{first order interaction} of the rows and columns.
 
-We define the projectors \begin{subequations}
+In the language of projectors we define \begin{subequations}
 \begin{align}
 P_r&:=n^{-1}ee',\\
 P_c&:=m^{-1}ee',
@@ -376,24 +376,59 @@ matrices we have the identity \begin{equation}
 our matrix results can be interpreted as a special case of the vector
 results in \(\mathbb{R}^{nm}\), with inner product \(x'(C\otimes R)y\).
 
+Now we switch to using orthogonal functions on a product space. This
+part is inspired by an anonymous and unpublished manuscript that I read
+around 1980 with a title that might have been ``Lois de Probabilité sur
+un Ensemble Produit'' and perhaps the words ``Décomposition'' and/or
+``Interaction'' were also in the title or subtitle. It was either by
+Jean-Paul Benzécri or by one of his students or co-workers. I did have a
+copy and I lost it, and Google can't find me a new one. The published
+paper by (\citeproc{ref-bener_82}{\textbf{bener\_82?}}) discusses the
+same materials, but in less detail.
+
 Define \(U\) and \(V\) to be square matrices with first column equal to
-one, \(U'U=nI\) and \(V'V=mI\). Then define \[
-\alpha_{ij}=\frac{1}{nm}u_i'Xv_j.
-\] Now \[
-X=\sum_{i=1}^n\sum_{j=1}^m\alpha_{ij}u_iv_j'
-\] \[
-\|X\|^2=\sum_{i=1}^n\sum_{j=1}^m\sum_{k=1}^n\sum_{l=1}^ma_{ij}a_{kl}\text{tr}\ v_ju_i'u_kv_l'=\sum_{i=1}^n\sum_{j=1}^m\sum_{k=1}^n\sum_{l=1}^m\delta^{ik}\delta^{jl}a_{ij}a_{kl}=\|A\|^2
-\] Term with \(i=1\) and \(j=1\). \[
-a_{11}ee'=x_{\bullet\bullet}ee'
-\] Terms with \(i=1\) and \(j\neq 1\). \[
-\frac{1}{nm}\sum_{j=2}^m\alpha_{1j}ev_j'=\frac{1}{nm}e\sum_{j=2}^m(e'Xv_j)v_j'=n^{-1}ee'XJ_m=e(x_{\bullet_j}-x_{\bullet\bullet})'
-\] \[
-\frac{1}{nm}\sum_{i=1}^n\sum_{j=2}^m(u_i'Xv_j)u_iv_j'=J_nXJ_m=(x_{ij}-x_{i\bullet}e'-ex_{j\bullet}+x_{\bullet\bullet})
-\]
+\(e\), \(U'U=nI\) and \(V'V=mI\). Note this implies \(UU'=nI\) and
+\(VV'=mI\), and thus \(UU'-ee'=nJ_n\) and \(VV'-ee'=mJ_m\). Define
+\(\alpha_{ij}:=(nm)^{-1}u_i'Xv_j\). Then \begin{equation}
+a_{ij}u_iv_j'=P_i^UXP^V_j,
+\end{equation} where \(P_i^U:=n^{-1}u_iu_i'\) and
+\(P_j^V:=\frac{1}{m}v_jv_j'\) project on the lines through the origin
+and respectively \(u\) and \(v\). Using these projectors we have the
+identity \begin{equation}
+X=\sum_{i=1}^n\sum_{j=1}^m\alpha_{ij}u_iv_j'=\sum_{i=1}^n\sum_{j=1}^mP_i^UXP^V_j,
+\end{equation} and \(\|X\|^2=\|A\|^2\), where \(A:=\{\alpha_{ij}\}\). If
+\(i\neq k\) then \(P_i^UP_k^U=0\) and if \(j\neq l\) then
+\(P_j^VP_l^V=0\). Moreover if \(I\) and \(K\) are disjoint subsets of
+\(\{1,\cdots,n\}\) then \begin{equation}
+\left(\sum_{i\in I}P_i^U\right)\left(\sum_{k\in K}P_k^U\right)=0.
+\end{equation} Although \(P_i^U\) and \(P_j^V\) are projectors on
+\(\mathbb{R}^n\) and \(\mathbb{R}^m\), they are only the building blocks
+for the projectors on \(\mathbb{R}^{n\times m}\) that we use in this
+section. Define \begin{equation}
+\Pi_{ij}(X):=P_i^UXP_j^V
+\end{equation} then \(\Pi_{ij}\) projects \(\mathbb{R}^{n\times m}\) on
+the line through the origin and \(u_iv_j'\). Thus
+\(\Pi_{ij}\circ\Pi_{ij}=\Pi_{ij}\) and \(\Pi_{ij}\circ\Pi_{kl}= 0\)
+unless \(i=k\) and \(j=l\). Also \begin{equation}
+\|X\|^2=\sum_{i=1}^n\sum_{j=1}^m\|\Pi_{ij}(X)\|^2
+\end{equation}
+
+\begin{subequations}
+\begin{align}
+\Pi_{11}(X)&=x_{\bullet\bullet}ee'.\\
+\sum_{j\neq 1}^m\Pi_{1j}(X)&=e(x_{\bullet_j}-x_{\bullet\bullet})',\\
+\sum_{i\neq 1}^m\Pi_{i1}(X)&=(x_{i\bullet}-x_{\bullet\bullet})e',\\
+\sum_{i\neq 1}^n\sum_{j\neq 1}^m\Pi_{ij}(X)=J_nXJ_m&=(x_{ij}-x_{i\bullet}e'-ex_{j\bullet}'+x_{\bullet\bullet})
+\end{align}
+\end{subequations}
+
+Although the \(\Pi_{ij}\) depend on the choice of \(U\) and \(V\) the
+partial sums defining the main effects and the interaction are
+independent of \(U\) and \(V\).
 
 \subsection{Arrays}\label{arrays}
 
-If \(X\) is an \(n\times m\times\ell\) array then the elementwiuse
+If \(X\) is an \(n\times m\times\ell\) array then the basic elementwise
 decomposition we are interested in is \begin{align}
 x_{ijk}&=x_{\bullet\bullet\bullet}+(x_{i\bullet\bullet}-x_{\bullet\bullet\bullet})+(x_{\bullet j \bullet}-x_{\bullet\bullet\bullet})+(x_{\bullet\bullet k}-x_{\bullet\bullet\bullet})\\
 &+(x_{ij\bullet}-x_{i\bullet\bullet}-x_{\bullet j\bullet}+x_{\bullet\bullet\bullet})\\
@@ -403,37 +438,19 @@ x_{ijk}&=x_{\bullet\bullet\bullet}+(x_{i\bullet\bullet}-x_{\bullet\bullet\bullet
 -x_{ij\bullet}-x_{i\bullet k}-x_{\bullet jk}+x_{i\bullet\bullet}+x_{\bullet j\bullet}+x_{\bullet\bullet k}-x_{\bullet\bullet\bullet})
 \end{align}
 
-\section{Interactions}\label{interactions}
+\sectionbreak
 
-\section{Orthogonal Functions}\label{orthogonal-functions}
+\section{Correspondence Analysis}\label{correspondence-analysis}
 
-This section is inspired by an anonymous and unpublished manuscript that
-I read around 1980 with a title that might have been ``Lois de
-Probabilité sur un Ensemble Produit'' and perhaps the words
-``Décomposition'' and ``Interaction'' were also in the title or
-subtitle. It was either by Jean-Paul Benzécri or by one of his students
-or co-workers. I did have a copy and I lost it, and Google can't find me
-a new one. The published papers by
-(\citeproc{ref-bener_82}{\textbf{bener\_82?}}) and
-(\citeproc{ref-benzecri_hamouda_83}{\textbf{benzecri\_hamouda\_83?}})
-discuss the same materials, but in less detail.
+Suppose \(F\) is a two-dimensional \(n\times m\) contingency table,
+normalized to have grand total equal to one, with row marginals in a
+diagonal matrix \(D\) and column marginals in a diagonal matrix \(E\).
+Use the inner product \(\langle F,G\rangle=\text{tr}\ D^{-1}FE^{-1}G'\).
+The projectors are \[
+f_{ij}/d_ie_j=1+\sum_{s=1}^m u_{is}v_{js}
+\]
 
-Suppose \(M_n\) is the set of matrices \(X\) of order \(n\) with
-
-\begin{itemize}
-\tightlist
-\item
-  first column all elements equal to one, and
-\item
-  \(X'X=nI\).
-\end{itemize}
-
-Suppose the array \(A\) is \(n\times m\times \ell\). Choose
-\(X\in M_n\), \(Y\in M_m\), and \(Z\in M_\ell\). Define \[
-\alpha_{ijk}=\sum_{i'=1}^n\sum_{j'=1}^m\sum_{k'=1}^l a_{i'j'k'}x_{i'i}y_{j'j}z_{k'k}
-\] \[
-\alpha_{ij1}=\sum_{i'=1}^n\sum_{j'=1}^ma_{i'j'\bullet}x_{i'i}y_{j'j}
-\] \sectionbreak
+\section{Log-linear Analysis}\label{log-linear-analysis}
 
 \section*{References}\label{references}
 \addcontentsline{toc}{section}{References}
