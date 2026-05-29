@@ -65,8 +65,37 @@ but is not required. The files can be found at
 
 ## Vectors
 
-Suppose $x$ is an element of $n$-dimensional Euclidean space, with the usual
-inner product $x'y$ and the squared norm $\|x\|^2:=\sqrt{x'x}$. We can decompose
+Suppose $\mathcal{L}$ is the space of real n-element vectors $(x_1,\cdots,x_n)$ and $A$ is a positive definite matrix of order $n$.
+For all $x,y\in\mathcal{L}$ we define the inner product $\langle x, y\rangle:=x'Ay$ and for all $x\in\mathcal{L}$ we define the norm $\|x\|^2:=\sqrt{x'Ax}$. 
+
+A projector is a square matrix $P$ that is
+
+* idempotent $P^2=P$, and
+* self-adjoint $AP=P'A$.
+
+If $P$ is a projector then so is $P'$ and so is $I-P$.
+
+$\|Px\|^2=x'P'APx=x'AP^2x=x'APx=\langle x, Px\rangle$
+
+$\|(I-P)x\|^2=x'(I-P')A(I-P)x=x'Ax-x'APx=\|x\|^2-\langle x, Px\rangle$
+
+$\langle Px, (I-P)y\rangle=x'P'A(I-P)y=x'P'Ay-x'P'APy=0$
+
+Suppose $\mathcal{M}$ is a subspace of $\mathcal{L}$ of dimension $p\leq n$ and $X$ is a
+and $A-$orthonormal basis of $\mathcal{M}$, i.e. $X'AX=I$. Then $P=XX'A$ is a projector
+which projects on $\mathcal{M}$. Note that $P^2= XX'AXX'A=XX'A=P$ and
+$AP=AXX'A=P'A$, as required. Also note $PX=X$, i.e. all elements of $\mathcal{M}$
+project on themselves. 
+
+For any projector $P$ the anti-projector $I-P$ is also a projector. 
+$(I-P)^2=I-2P+P^2=I-P$. $A(I-P)=A-AP=A-P'A=(I-P)'A$. Moreover
+$P$ and $(I-P)$ are orthogonal, because $P(I-P)=P-P^2=0$.
+Since obviously $x=Px+(I-P)x$
+
+\|Px\|^2=x'P'APx
+
+
+We can decompose
 $x$ into two orthogonal parts, with the first part a vector with all elements
 equal to the mean and the second part a vector with the deviations from the
 mean. We use a $\bullet$ replacing a subscript to indicate averaging over that

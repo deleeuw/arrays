@@ -241,7 +241,7 @@
 
 \title{Array Decomposition}
 \author{Jan de Leeuw}
-\date{May 26, 2026}
+\date{May 28, 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -270,13 +270,28 @@ can be found at \url{https://github.com/deleeuw/arrays}
 
 \subsection{Vectors}\label{vectors}
 
-Suppose \(x\) is an element of \(n\)-dimensional Euclidean space, with
-the usual inner product \(x'y\) and the squared norm
-\(\|x\|^2:=\sqrt{x'x}\). We can decompose \(x\) into two orthogonal
-parts, with the first part a vector with all elements equal to the mean
-and the second part a vector with the deviations from the mean. We use a
-\(\bullet\) replacing a subscript to indicate averaging over that
-subscript. The elementwise decomposition is \begin{equation}
+\(\mathcal{X}\) is an \(n\)-dimensional \(vector space\). For all
+\(x,y\in\mathcal{X}\) define an \emph{inner product}
+\(\langle x,y\rangle\) and for all \(x\in\mathcal{X}\) define its
+\emph{norm} \(\|x\|^2:=\sqrt{\langle x,x\rangle}\).
+
+A \emph{projector} is a linear map \(P\) of \(\mathcal{X}\) into
+\(\mathcal{X}\) that is
+
+\begin{itemize}
+\tightlist
+\item
+  idempotent for all \(x\in\mathcal{X}\) we have \(P(P(x))=P(x)\), and
+\item
+  self-adjoint for all \(x,y\in\mathcal{X}\) we
+  have\(\langle P(x), y\rangle=\langle x, P(y)\rangle\).
+\end{itemize}
+
+We can decompose \(x\) into two orthogonal parts, with the first part a
+vector with all elements equal to the mean and the second part a vector
+with the deviations from the mean. We use a \(\bullet\) replacing a
+subscript to indicate averaging over that subscript. The elementwise
+decomposition is \begin{equation}
 x_i=x_\bullet+(x_i-x_\bullet).\label{eq-onedimelem}
 \end{equation}
 
@@ -383,8 +398,8 @@ un Ensemble Produit'' and perhaps the words ``Décomposition'' and/or
 ``Interaction'' were also in the title or subtitle. It was either by
 Jean-Paul Benzécri or by one of his students or co-workers. I did have a
 copy and I lost it, and Google can't find me a new one. The published
-paper by (\citeproc{ref-bener_82}{\textbf{bener\_82?}}) discusses the
-same materials, but in less detail.
+paper by Bener (\citeproc{ref-bener_82}{1982}) discusses the same
+materials, but in less detail.
 
 Define \(U\) and \(V\) to be square matrices with first column equal to
 \(e\), \(U'U=nI\) and \(V'V=mI\). Note this implies \(UU'=nI\) and
@@ -457,6 +472,12 @@ f_{ij}/d_ie_j=1+\sum_{s=1}^m u_{is}v_{js}
 
 \protect\phantomsection\label{refs}
 \begin{CSLReferences}{1}{1}
+\bibitem[\citeproctext]{ref-bener_82}
+Bener, A. 1982. {``{D{é}composition des Interactions dans une
+Correspondance Multiple}.''} \emph{Les Cahiers de l'Analyse Des
+Donn{é}es} 7 (1): 25--32.
+\url{https://www.numdam.org/item/CAD_1982__7_1_25_0.pdf}.
+
 \bibitem[\citeproctext]{ref-deleeuw_E_26e}
 {de Leeuw, Jan}. 2026. {``Matrix Decomposition with Kronecker
 Weights.''}
