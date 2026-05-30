@@ -65,19 +65,29 @@ but is not required. The files can be found at
 
 ## Vectors
 
-Suppose $\mathcal{L}$ is the space of real n-element vectors $(x_1,\cdots,x_n)$ and $A$ is a positive definite matrix of order $n$.
-For all $x,y\in\mathcal{L}$ we define the inner product $\langle x, y\rangle:=x'Ay$ and for all $x\in\mathcal{L}$ we define the norm $\|x\|^2:=\sqrt{x'Ax}$. 
+Suppose $\mathcal{L}$ is the space of real $n-$element vectors and $A$ is a positive definite matrix of order $n$.
+For all $x,y\in\mathcal{L}$ we define the inner product $\langle x, y\rangle:=x'Ay$ and for all $x\in\mathcal{L}$ we define the corresponding norm $\|x\|^2:=\sqrt{x'Ax}$. 
 
-A projector is a square matrix $P$ that is
+Now suppose $\mathcal{M}$ is subspace of dimension $p$ and $X$ is an orthonormal basis for $\mathcal{M}$, i.e. $n\times p$ matrix with every column in $\mathcal{M}$ and
+$X'AX=I$. If we want to find the closest point to $y\in\mathcal{L}$ in $\mathcal{M}$ we must minimize $\|y-X\beta\|^2$ over $\beta$. The unique minimum is attained at $\hat\beta=XX'Ay$ and the projection of $y$ on $\mathcal{M}$ is $X\hat\beta=XX'Ay$.
 
-* idempotent $P^2=P$, and
-* self-adjoint $AP=P'A$.
+The projector $P:=XX'A$ is a square matrix that is
+
+* idempotent: $P^2=P$, and
+* self-adjoint: for all $x,y\in\mathcal{L}$ $\langle x,Py\rangle=\langle Px, y\rangle$, i.e. $AP=P'A$.
+We have $Px=x$ if and only if $x\in\mathcal{M}$.
+
+Suppose $X_\perp$ is an orthonormal basis of $\mathcal{M}_\perp$, the subspace of all $z$ such that $z'AX=0$. Then 
+$$
+\begin{bmatrix}X&X_\perp\end{bmatrix}\begin{bmatrix}X'\\ X_\perp'\end{bmatrix}=A^{-1}.
+$$
+and thus $X_\perp X_\perp'A=I-XX'A=I-P$.
 
 If $P$ is a projector then so is $P'$ and so is $I-P$.
 
 $\|Px\|^2=x'P'APx=x'AP^2x=x'APx=\langle x, Px\rangle$
 
-$\|(I-P)x\|^2=x'(I-P')A(I-P)x=x'Ax-x'APx=\|x\|^2-\langle x, Px\rangle$
+$\|(I-P)x\|^2=x'(I-P')A(I-P)x=x'Ax-x'APx=\|x\|^2-\|Px\|^2$
 
 $\langle Px, (I-P)y\rangle=x'P'A(I-P)y=x'P'Ay-x'P'APy=0$
 
