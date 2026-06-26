@@ -241,7 +241,7 @@
 
 \title{Array Decomposition}
 \author{Jan de Leeuw}
-\date{May 30, 2026}
+\date{June 26, 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -276,12 +276,12 @@ Suppose \(\mathcal{L}\) is the space of real \(n-\)element vectors and
 \(\langle x, y\rangle:=x'Ay\) and for all \(x\in\mathcal{L}\) we define
 the corresponding norm \(\|x\|^2:=\sqrt{x'Ax}\).
 
-Now suppose \(\mathcal{M}\) is subspace of dimension \(p\) and \(X\) is
-an orthonormal basis for \(\mathcal{M}\), i.e.~\(n\times p\) matrix with
+Suppose \(\mathcal{M}\) is subspace of dimension \(p\) and \(X\) is an
+orthonormal basis for \(\mathcal{M}\), i.e.~\(n\times p\) matrix with
 every column in \(\mathcal{M}\) and \(X'AX=I\). If we want to find the
 closest point to \(y\in\mathcal{L}\) in \(\mathcal{M}\) we must minimize
 \(\|y-X\beta\|^2\) over \(\beta\). The unique minimum is attained at
-\(\hat\beta=XX'Ay\) and the projection of \(y\) on \(\mathcal{M}\) is
+\(\hat\beta=X'Ay\) and the projection of \(y\) on \(\mathcal{M}\) is
 \(X\hat\beta=XX'Ay\).
 
 The projector \(P:=XX'A\) is a square matrix that is
@@ -292,62 +292,48 @@ The projector \(P:=XX'A\) is a square matrix that is
   idempotent: \(P^2=P\), and
 \item
   self-adjoint: for all \(x,y\in\mathcal{L}\)
-  \(\langle x,Py\rangle=\langle Px, y\rangle\), i.e.~\(AP=P'A\). We have
-  \(Px=x\) if and only if \(x\in\mathcal{M}\).
+  \(\langle x,Py\rangle=\langle Px, y\rangle\), i.e.~\(AP=P'A\).
 \end{itemize}
 
-Suppose \(X_\perp\) is an orthonormal basis of \(\mathcal{M}_\perp\),
-the subspace of all \(z\) such that \(z'AX=0\). Then \[
+We have \(Px=x\) if and only if \(x\in\mathcal{M}\). For any projector
+\(P\) the matrix \(I-P\) is also a projector, because
+
+\begin{itemize}
+\tightlist
+\item
+  \((I-P)^2=I-2P+P^2=I-P\), and
+\item
+  \(A(I-P)=A-AP=A-P'A=(I-P)'A\).
+\end{itemize}
+
+Moreover \(P\) and \((I-P)\) are orthogonal, because \(P(I-P)=P-P^2=0\).
+
+Suppose \(X_\perp\) is an \(n\times(n-p)\) orthonormal basis of
+\(\mathcal{M}_\perp\), the subspace of all \(z\) such that \(z'AX=0\).
+Thus \begin{subequations}
+\begin{equation}
+\begin{bmatrix}X'\\ X_\perp'\end{bmatrix}A\begin{bmatrix}X&X_\perp\end{bmatrix}=\begin{bmatrix}I&0\\0&I\end{bmatrix},
+\end{equation}
+and consequently
+\begin{equation}
 \begin{bmatrix}X&X_\perp\end{bmatrix}\begin{bmatrix}X'\\ X_\perp'\end{bmatrix}=A^{-1}.
-\] and thus \(X_\perp X_\perp'A=I-XX'A=I-P\).
-
-If \(P\) is a projector then so is \(P'\) and so is \(I-P\).
-
-\(\|Px\|^2=x'P'APx=x'AP^2x=x'APx=\langle x, Px\rangle\)
-
-\(\|(I-P)x\|^2=x'(I-P')A(I-P)x=x'Ax-x'APx=\|x\|^2-\|Px\|^2\)
-
-\(\langle Px, (I-P)y\rangle=x'P'A(I-P)y=x'P'Ay-x'P'APy=0\)
-
-Suppose \(\mathcal{M}\) is a subspace of \(\mathcal{L}\) of dimension
-\(p\leq n\) and \(X\) is a and \(A-\)orthonormal basis of
-\(\mathcal{M}\), i.e.~\(X'AX=I\). Then \(P=XX'A\) is a projector which
-projects on \(\mathcal{M}\). Note that \(P^2= XX'AXX'A=XX'A=P\) and
-\(AP=AXX'A=P'A\), as required. Also note \(PX=X\), i.e.~all elements of
-\(\mathcal{M}\) project on themselves.
-
-For any projector \(P\) the anti-projector \(I-P\) is also a projector.
-\((I-P)^2=I-2P+P^2=I-P\). \(A(I-P)=A-AP=A-P'A=(I-P)'A\). Moreover \(P\)
-and \((I-P)\) are orthogonal, because \(P(I-P)=P-P^2=0\). Since
-obviously \(x=Px+(I-P)x\)
-
-\textbar Px\textbar\^{}2=x'P'APx
-
-We can decompose \(x\) into two orthogonal parts, with the first part a
-vector with all elements equal to the mean and the second part a vector
-with the deviations from the mean. We use a \(\bullet\) replacing a
-subscript to indicate averaging over that subscript. The elementwise
-decomposition is \begin{equation}
-x_i=x_\bullet+(x_i-x_\bullet).\label{eq-onedimelem}
+\end{equation}
+\end{subequations} It follows that \(X_\perp X_\perp'A=I-XX'A=I-P\).
+Thus \(I-P\) projects on \(\mathcal{M}_\perp\). We have \begin{align}
+\|Px\|^2&=x'P'APx=x'AP^2x=x'APx=\langle x, Px\rangle,\\
+\|(I-P)x\|^2&=x'(I-P')A(I-P)x=x'Ax-x'APx=\|x\|^2-\|Px\|^2,\\
+\langle Px, (I-P)y\rangle&=x'P'A(I-P)y=x'P'Ay-x'P'APy=0.
+\end{align} It is trivially true for any square \(P\) that
+\(x=Px+(I-P)x\), but \(Px\) and \((I-P)x\) are orthogonal if and only if
+\(P\) is a projector, and in that case we also have Pythagoras
+\begin{equation}
+\|x\|^2=\|Px\|^2+\|(I-P)x\|^2.
 \end{equation}
 
-Equation \eqref{eq-onedimelem} can be written as \begin{equation}
-x=Px+(I-P)x,\label{eq-onedimproj}
-\end{equation} where \(P\) projects on the subspace of all constant
-vectors, i.e.~\(P:=n^{-1}ee'\) with \(e\) a vector with all elements
-equal to one. Now \(P^2=P\) and thus \(P(I-P)=0\), which shows that
-\(Px\) and \((I-P)x\) are orthogonal. Also, as Pythagoras used to say,
-\begin{equation}
-\|x\|^2=\|Px\|^2+\|I-Px\|^2.\label{eq-onedimpyth}
-\end{equation} Note that equation \eqref{eq-onedimproj} is actually
-correct for any square matrix \(P\), but the two components are
-orthogonal if and only if \(P\) is a projector. Thus
-\eqref{eq-onedimpyth} is also only true if \(P\) is a projector.
-
-We can generalize equation \eqref{eq-onedimproj} to mutually orthogonal
-subspaces \(S_1,\cdots,S_m\), with corresponding projectors
-\(P_1,\cdots,P_m\). If \(P_1+\cdots+P_m=I\) we can have the orthogonal
-decomposition \begin{equation}
+We can generalize the decomposition \(x=Px+(I-P)x\) to several mutually
+orthogonal subspaces \(\mathcal{M}_1,\cdots,\mathcal{M}_m\), with
+corresponding projectors \(P_1,\cdots,P_m\). If \(P_1+\cdots+P_m=I\) we
+can have the decomposition in orthogonal parts \begin{equation}
 x=P_1x+P_2x+\cdots P_mx,
 \end{equation} and if \(P_1+\cdots+P_m\lesssim I\) in the Loewner
 sense\footnote{The eigenvalues of $P_1+\cdots+P_m$ are less than or equal to one.}
